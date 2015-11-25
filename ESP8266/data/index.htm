@@ -1,6 +1,53 @@
 <html>
 <head>
-<title>Untitled Document</title>
+
+<script type = "application/javascript">
+function loadData() {
+	var data_file = "/data";
+	var http_request = new XMLHttpRequest();
+	try {
+		// Opera 8.0+, Firefox, Chrome, Safari
+		http_request = new XMLHttpRequest();
+	}catch (e){
+	    // Internet Explorer Browsers
+	    try { http_request = new ActiveXObject("Msxml2.XMLHTTP"); }
+		catch (e) {
+		    try { http_request = new ActiveXObject("Microsoft.XMLHTTP"); }
+			catch (e){
+				// Something went wrong
+				alert("Your browser broke!");
+				return false;
+		    }
+	    }
+	}
+
+	http_request.onreadystatechange = function(){
+		if (http_request.readyState == 4  ){
+			var jsonObj = JSON.parse(http_request.responseText);
+
+			document.getElementById("page_refresh_time").innerHTML = jsonObj.page_refresh_time;
+			document.getElementById("value_temperature").innerHTML = jsonObj.value_temperature;
+			document.getElementById("value_humidity").innerHTML = jsonObj.value_humidity;
+			document.getElementById("value_illuminance").innerHTML = jsonObj.value_illuminance;
+			document.getElementById("value_ground_moisture").innerHTML = jsonObj.value_ground_moisture;
+			document.getElementById("value_pressure").innerHTML = jsonObj.value_pressure;
+			document.getElementById("value_ph").innerHTML = jsonObj.value_ph;
+			document.getElementById("value_co2").innerHTML = jsonObj.value_co2;
+			document.getElementById("value_ec").innerHTML = jsonObj.value_ec;
+
+			// Hacemos la llamada recursiva
+			setTimeout ("loadData()", jsonObj.page_refresh_time*1000);
+		}
+	}
+	http_request.open("GET", data_file, true);
+	http_request.send();
+}
+
+loadData();
+
+</script>
+
+<title>Indoor</title>
 <style type="text/css">
 
 *, *:before, *:after {
@@ -284,19 +331,19 @@ footer p {
 	font-size: 70px;
 	left: 55px;
 }
-.thum {
+.tmois {
 	background: #a6c659;
 	border: 1px solid #7dad0a;
 }
-.thum .inner {
+.tmois .inner {
 	border-top: 1px solid #7dad0a;
 }
-.thum .inner .text {
+.tmois .inner .text {
 	border: 1px solid #7dad0a;
 	background: #a6c659;
 	text-shadow: 1px 1px 0px #7dad0a;
 }
-.thum .inner .icon {
+.tmois .inner .icon {
 	top: -100px;
 	font-size: 70px;
 	left: 55px;
@@ -400,7 +447,7 @@ footer p {
   <section id="content1">
   
 	<div class="simplecard">
-	Los datos se actualizan automaticamente cada <strong>5 segundos</strong>.
+	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
 	</div>
   
     <div class='container'>
@@ -410,7 +457,7 @@ footer p {
 		  <div class='title'>
 			<div class='text'>TEMPERATURE</div>
 		  </div>
-		  <div class='number'>22</div>
+		  <div class='number'><div id='value_temperature'>22</div></div>
 		  <div class='measure'>CELCIUS</div>
 		</div>
 	  </div>
@@ -418,9 +465,9 @@ footer p {
 		<div class='inner'>
 		  <div class='icon'><strong>&#127787;</strong></div>
 		  <div class='title'>
-			<div class='text'>MOISTURE</div>
+			<div class='text'>HUMIDITY</div>
 		  </div>
-		  <div class='number'>45</div>
+		  <div class='number'><div id='value_humidity'>45</div></div>
 		  <div class='measure'>PERCENT</div>
 		</div>
 	  </div>
@@ -430,17 +477,17 @@ footer p {
 		  <div class='title'>
 			<div class='text'>ILLUMINANCE</div>
 		  </div>
-		  <div class='number'>67</div>
+		  <div class='number'><div id='value_illuminance'>67</div></div>
 		  <div class='measure'>LUX</div>
 		</div>
 	  </div>
-	  <div class='card thum'>
+	  <div class='card tmois'>
 		<div class='inner'>
 		  <div class='icon'>&#128166;</div>
 		  <div class='title'>
 			<div class='text'>GROUND MOISTURE</div>
 		  </div>
-		  <div class='number'>22</div>
+		  <div class='number'><div id='value_ground_moisture'>31</div></div>
 		  <div class='measure'>PERCENT</div>
 		</div>
 	  </div>
@@ -452,7 +499,7 @@ footer p {
 		  <div class='title'>
 			<div class='text'>PRESSURE</div>
 		  </div>
-		  <div class='number'>760</div>
+		  <div class='number'><div id='value_pressure'>760</div></div>
 		  <div class='measure'>TORR</div>
 		</div>
 	  </div>
@@ -462,7 +509,7 @@ footer p {
 		  <div class='title'>
 			<div class='text'>POWER OF HYDROGEN</div>
 		  </div>
-		  <div class='number'>6.2</div>
+		  <div class='number'><div id='value_ph'>6.2</div></div>
 		  <div class='measure'>PH</div>
 		</div>
 	  </div>
@@ -472,7 +519,7 @@ footer p {
 		  <div class='title'>
 			<div class='text'>CARBON DIOXIDE</div>
 		  </div>
-		  <div class='number'>452</div>
+		  <div class='number'><div id='value_co2'>452</div></div>
 		  <div class='measure'>PPM</div>
 		</div>
 	  </div>
@@ -482,7 +529,7 @@ footer p {
 		  <div class='title'>
 			<div class='text'>ELECTRICAL CONDUCTIVITY</div>
 		  </div>
-		  <div class='number'>1.2</div>
+		  <div class='number'><div id='value_ec'>1.2</div></div>
 		  <div class='measure'>MS/CM</div>
 		</div>
 	  </div>

@@ -5,68 +5,107 @@
 #include <FS.h>
 #include <Ticker.h>
 
-#define DEBUG // Comentado default
+//#define DEBUG // Comentado default
 
-// Parametros Punto de Acceso
-const char *apSSID = "INDOOR";
-const char *apPassword = "12345678";
-IPAddress apIP(192, 168, 4, 1);
-IPAddress apMask(255, 255, 255, 0);
+// CONFIGURACIONES PRE-PROGRAMABLES
+#define SERIAL_SPEED      115200
+#define AP_IP             192, 168, 4, 1 // Usar comas en vez de puntos
+#define AP_MASK           255, 255, 255, 0 // Usar comas en vez de puntos
+#define WEB_PORT          80
+#define DNS_PORT          53
+#define DNS_TTL           300 // Time To Load
+#define PAGE_REFRESH_TIME 10 // Segundos
+#define GREEN_HOST        "green.com"
 
-// Parametros Servidor Web
-ESP8266WebServer webServer(80);
+// CONFIGURACIONES PROGRAMABLES
+char CONFIG_AP_SSID[32] = "INDOOR";
+char CONFIG_AP_PSWD[64] = "12345678";
+char CONFIG_WEB_HOST[32] = "indoor.com";
+char CONFIG_STA_SSID[32] = "GPT2";
+char CONFIG_STA_PSWD[64] = "otrotipo";
 
-// Parametros Servidor DNS
+// Variables de estado
+char STATUS_NETWORK = 0;
+char STATUS_GREEN = 0;
+
+// Valores sensores
+float VALUE_TEMPERATURE = 22;
+float VALUE_HUMIDITY = 45;
+float VALUE_ILLUMINANCE = 67;
+float VALUE_GROUND_MOISTURE = 31;
+float VALUE_PRESSURE = 760;
+float VALUE_PH = 6.2;
+float VALUE_CO2 = 452;
+float VALUE_EC = 1.2;
+
+// Globales
+ESP8266WebServer webServer(WEB_PORT);
 DNSServer dnsServer;
-const byte DNS_PORT = 53;
-
-// Parametros Estacion Wifi + Cliente Web
-const char* ssid     = "GPT2";
-const char* password = "otrotipo";
 Ticker updater;
-const char* host = "posttestserver.com";
-
-// Variables
-boolean staConnected = false;
 
 void setup() {
-  delay(1000);
+  delay(200);
 
-  // Comuncacion Serie para Debug
-  Serial.begin(115200);
+  // Comuncacion Serie
+  Serial.begin(SERIAL_SPEED);
 
+  // Activa del modo Access Point y Station al mismo tiempo
   WiFi.mode(WIFI_AP_STA);
   
   // Configuracion del Punto de Acceso
-  WiFi.softAPConfig(apIP, apIP, apMask);
-  WiFi.softAP(apSSID, apPassword);
+  WiFi.softAPConfig(IPAddress(AP_IP), IPAddress(AP_IP), IPAddress(AP_MASK));
+  WiFi.softAP(CONFIG_AP_SSID, CONFIG_AP_PSWD);
 
   // Configuracion Servidor DNS
-  dnsServer.start(DNS_PORT, "*", apIP);
-  dnsServer.setTTL(300);
+  dnsServer.start(DNS_PORT, CONFIG_WEB_HOST, IPAddress(AP_IP));
+  dnsServer.setTTL(DNS_TTL);
 
   // Configuracion Sistema de Arcvhivos SPIFFS
   SPIFFS.begin();
 
   // Configuracion Servidor Web
-  webServer.onNotFound([](){
-    String path = webServer.uri();
-    if(path.endsWith("/")) path += "index.htm";
-    String contentType = getContentType(path);
-    if(SPIFFS.exists(path)) {
-      File file = SPIFFS.open(path, "r");
-      webServer.streamFile(file, contentType);
-      file.close();
-    }
-    else webServer.send(404, "text/html", "<strong>404</strong> File Not Found");
-  });
+  webServer.on("/data", webRequestGetData);
+  webServer.onNotFound(webRequestAny);
   webServer.begin();
 
   // Configuracion Estacion WiFi
-  WiFi.begin(ssid, password);
-  updater.attach(2.0, [](){
-    staConnected = (WiFi.status() == WL_CONNECTED);
+  WiFi.begin(CONFIG_STA_SSID, CONFIG_STA_PSWD);
+  updater.attach(2.0, [](){ 
+    // Actualizamos cada 2 segundos el estado de conexion del WiFi
+    STATUS_NETWORK = (WiFi.status() == WL_CONNECTED)?1:0;
   });
+}
+/* De esta manera podremos acceder a cualquier archivo
+ * del directorio sin tener que hacer un metodo para cada uno */
+void webRequestAny() {
+  String path = webServer.uri();
+  if(path.endsWith("/")) path += "index.htm"; // Si se pide el root se envia index
+  String contentType = getContentType(path);
+  if(SPIFFS.exists(path)) {
+    File file = SPIFFS.open(path, "r");
+    webServer.streamFile(file, contentType);
+    file.close();
+  }
+  else webServer.send(404, "text/html", "<strong>404</strong><br>File Not Found");
+}
+
+void webRequestGetData() {
+    // Se usa el constructor String(valor, base) porque si el valor es 0 lo entiende como null terminator
+    String json = "{";
+    json += "\"page_refresh_time\":"      +   String(PAGE_REFRESH_TIME, 10);
+    json += ", \"status_network\":"       +   String(STATUS_NETWORK, 10);
+    json += ", \"status_green\":"         +   String(STATUS_GREEN, 10);
+    json += ", \"value_temperature\":"    +   String(VALUE_TEMPERATURE, 1);
+    json += ", \"value_humidity\":"       +   String(VALUE_HUMIDITY, 1);
+    json += ", \"value_illuminance\":"    +   String(VALUE_ILLUMINANCE, 1);
+    json += ", \"value_ground_moisture\":"+   String(VALUE_GROUND_MOISTURE, 1);
+    json += ", \"value_pressure\":"       +   String(VALUE_PRESSURE, 0);
+    json += ", \"value_ph\":"             +   String(VALUE_PH, 2);
+    json += ", \"value_co2\":"            +   String(VALUE_CO2, 0);
+    json += ", \"value_ec\":"             +   String(VALUE_EC, 2);
+    json += "}";
+    webServer.send(200, "application/json", json);
+    json = String();
 }
 
 void loop() {
