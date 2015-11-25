@@ -75,6 +75,12 @@ void setup() {
     STATUS_NETWORK = (WiFi.status() == WL_CONNECTED)?1:0;
   });
 }
+
+void loop() {
+  dnsServer.processNextRequest();
+	webServer.handleClient();
+}
+
 /* De esta manera podremos acceder a cualquier archivo
  * del directorio sin tener que hacer un metodo para cada uno */
 void webRequestAny() {
@@ -106,11 +112,6 @@ void webRequestGetData() {
     json += "}";
     webServer.send(200, "application/json", json);
     json = String();
-}
-
-void loop() {
-  dnsServer.processNextRequest();
-	webServer.handleClient();
 }
 
 String getContentType(String filename){
