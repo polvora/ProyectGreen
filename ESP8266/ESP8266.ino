@@ -18,25 +18,15 @@
 #define GREEN_HOST        "green.com"
 
 // CONFIGURACIONES PROGRAMABLES
-char CONFIG_AP_SSID[32] = "INDOOR";
+char CONFIG_AP_SSID[32] = "PID";
 char CONFIG_AP_PSWD[64] = "12345678";
-char CONFIG_WEB_HOST[32] = "indoor.com";
+char CONFIG_WEB_HOST[32] = "pid.com";
 char CONFIG_STA_SSID[32] = "GPT2";
 char CONFIG_STA_PSWD[64] = "otrotipo";
 
 // Variables de estado
 char STATUS_NETWORK = 0;
 char STATUS_GREEN = 0;
-
-// Valores sensores
-float VALUE_TEMPERATURE = 22;
-float VALUE_HUMIDITY = 45;
-float VALUE_ILLUMINANCE = 67;
-float VALUE_GROUND_MOISTURE = 31;
-float VALUE_PRESSURE = 760;
-float VALUE_PH = 6.2;
-float VALUE_CO2 = 452;
-float VALUE_EC = 1.2;
 
 // Globales
 ESP8266WebServer webServer(WEB_PORT);
@@ -78,7 +68,43 @@ void setup() {
 
 void loop() {
   dnsServer.processNextRequest();
-	webServer.handleClient();
+  webServer.handleClient();
+  if (Serial.available()) handleIncommingData();
+}
+
+void handleIncommingData() {
+  
+  Serial.flush();
+}
+
+void webRequestGetData() {
+  Serial.print("GETVALUES;");
+  // Se usa el constructor String(valor, base) porque si el valor es 0 lo entiende como null terminator
+  String json = "{";
+  json += "\"page_refresh_time\":"      +   String(PAGE_REFRESH_TIME, 10);
+  json += ", \"status_network\":"       +   String(STATUS_NETWORK, 10);
+  json += ", \"status_green\":"         +   String(STATUS_GREEN, 10);
+  json += ", \"value_temperature\":"    +   Serial.readStringUntil('/');
+  Serial.readStringUntil(';'); // All other TEMPERATURE values
+  json += ", \"value_humidity\":"       +   Serial.readStringUntil('/');
+  Serial.readStringUntil(';'); // All other HUMIDITY values
+  json += ", \"value_illuminance\":"    +   Serial.readStringUntil('/');
+  Serial.readStringUntil(';'); // All other ILLUMINANCE values
+  json += ", \"value_ground_moisture\":"+   Serial.readStringUntil('/');
+  Serial.readStringUntil(';'); // All other GROUND_MOISTURE values
+  json += ", \"value_pressure\":"       +   Serial.readStringUntil('/');
+  Serial.readStringUntil(';'); // All other PRESSURE values
+  json += ", \"value_ph\":"             +   Serial.readStringUntil('/');
+  Serial.readStringUntil(';'); // All other PH values
+  json += ", \"value_co2\":"            +   Serial.readStringUntil('/');
+  Serial.readStringUntil(';'); // All other CO2 values
+  json += ", \"value_ec\":"             +   Serial.readStringUntil('/');
+  Serial.readStringUntil(';'); // All other CO2 values
+  json += "}";
+  Serial.flush();
+  
+  webServer.send(200, "application/json", json);
+  json = String();
 }
 
 /* De esta manera podremos acceder a cualquier archivo
@@ -93,25 +119,6 @@ void webRequestAny() {
     file.close();
   }
   else webServer.send(404, "text/html", "<strong>404</strong><br>File Not Found");
-}
-
-void webRequestGetData() {
-    // Se usa el constructor String(valor, base) porque si el valor es 0 lo entiende como null terminator
-    String json = "{";
-    json += "\"page_refresh_time\":"      +   String(PAGE_REFRESH_TIME, 10);
-    json += ", \"status_network\":"       +   String(STATUS_NETWORK, 10);
-    json += ", \"status_green\":"         +   String(STATUS_GREEN, 10);
-    json += ", \"value_temperature\":"    +   String(VALUE_TEMPERATURE, 1);
-    json += ", \"value_humidity\":"       +   String(VALUE_HUMIDITY, 1);
-    json += ", \"value_illuminance\":"    +   String(VALUE_ILLUMINANCE, 1);
-    json += ", \"value_ground_moisture\":"+   String(VALUE_GROUND_MOISTURE, 1);
-    json += ", \"value_pressure\":"       +   String(VALUE_PRESSURE, 0);
-    json += ", \"value_ph\":"             +   String(VALUE_PH, 2);
-    json += ", \"value_co2\":"            +   String(VALUE_CO2, 0);
-    json += ", \"value_ec\":"             +   String(VALUE_EC, 2);
-    json += "}";
-    webServer.send(200, "application/json", json);
-    json = String();
 }
 
 String getContentType(String filename){
