@@ -18,9 +18,9 @@
 #define GREEN_HOST        "green.com"
 
 // CONFIGURACIONES PROGRAMABLES
-char CONFIG_AP_SSID[32] = "PID";
+char CONFIG_AP_SSID[32] = "CONTROL";
 char CONFIG_AP_PSWD[64] = "12345678";
-char CONFIG_WEB_HOST[32] = "pid.com";
+char CONFIG_WEB_HOST[32] = "control.com";
 char CONFIG_STA_SSID[32] = "GPT2";
 char CONFIG_STA_PSWD[64] = "otrotipo";
 
@@ -54,7 +54,8 @@ void setup() {
   SPIFFS.begin();
 
   // Configuracion Servidor Web
-  webServer.on("/data", webRequestGetData);
+  webServer.on("/data", HTTP_GET, webRequestGetData);
+  webServer.on("/parameters", HTTP_POST, webRequestSetParameters);
   webServer.onNotFound(webRequestAny);
   webServer.begin();
 
@@ -73,7 +74,6 @@ void loop() {
 }
 
 void handleIncommingData() {
-  
   Serial.flush();
 }
 
@@ -107,6 +107,69 @@ void webRequestGetData() {
   json = String();
 }
 
+void webRequestSetParameters() {
+  if (webServer.args() != 24) {
+     webServer.send(400, "text/plain", "Invalid Argument Number");
+     return;
+  }
+  if (webServer.arg("temperature_setpoint").toFloat() > 0 && webServer.arg("temperature_p").toFloat() > 0 &&
+      webServer.arg("temperature_i").toFloat() > 0 && webServer.arg("temperature_d").toFloat() > 0) {
+    webServer.send(400, "text/plain", "Invalid Temperature Arguments");
+    return;
+  }
+  if (webServer.arg("humidity_setpoint").toFloat() > 0 && webServer.arg("humidity_p").toFloat() > 0 &&
+      webServer.arg("humidity_i").toFloat() > 0 && webServer.arg("humidity_d").toFloat() > 0) {
+    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+    return;
+  }
+  if (webServer.arg("illuminance_setpoint").toFloat() > 0 && webServer.arg("illuminance_p").toFloat() > 0 &&
+      webServer.arg("illuminance_i").toFloat() > 0 && webServer.arg("illuminance_d").toFloat() > 0) {
+    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+    return;
+  }
+  if (webServer.arg("ground_moisture_setpoint").toFloat() > 0 && webServer.arg("ground_moisture_p").toFloat() > 0 &&
+      webServer.arg("ground_moisture_i").toFloat() > 0 && webServer.arg("ground_moisture_d").toFloat() > 0) {
+    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+    return;
+  }
+  if (webServer.arg("pressure_setpoint").toFloat() > 0 && webServer.arg("pressure_p").toFloat() > 0 &&
+      webServer.arg("pressure_i").toFloat() > 0 && webServer.arg("pressure_d").toFloat() > 0) {
+    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+    return;
+  }
+  if (webServer.arg("ph_setpoint").toFloat() > 0 && webServer.arg("ph_p").toFloat() > 0 &&
+      webServer.arg("ph_i").toFloat() > 0 && webServer.arg("ph_d").toFloat() > 0) {
+    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+    return;
+  }
+  if (webServer.arg("co2_setpoint").toFloat() > 0 && webServer.arg("co2_p").toFloat() > 0 &&
+      webServer.arg("co2_i").toFloat() > 0 && webServer.arg("co2_d").toFloat() > 0) {
+    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+    return;
+  }
+  if (webServer.arg("ec_setpoint").toFloat() > 0 && webServer.arg("ec_p").toFloat() > 0 &&
+      webServer.arg("ec_i").toFloat() > 0 && webServer.arg("ec_d").toFloat() > 0) {
+    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+    return;
+  }
+  
+  Serial.print("SETVALUES;");
+  String mBuffer = Serial.readStringUntil(';');
+  if (!mBuffer.equals("OK")) return;
+  
+  mBuffer = String();
+  for (int i = 0; i < 8; i++) {
+    mBuffer = webServer.arg(i*4+0) + "/" + webServer.arg(i*4+1) + "/" 
+            + webServer.arg(i*4+2) + "/" + webServer.arg(i*4+3) + ";";
+     Serial.print(mBuffer);
+  }
+  Serial.flush();
+  
+  webServer.sendHeader("Location", "/?parameters");
+  webServer.send(303, "text/plain", "You are been redirected to " + mBuffer);
+  mBuffer = String();
+}
+
 /* De esta manera podremos acceder a cualquier archivo
  * del directorio sin tener que hacer un metodo para cada uno */
 void webRequestAny() {
@@ -118,7 +181,7 @@ void webRequestAny() {
     webServer.streamFile(file, contentType);
     file.close();
   }
-  else webServer.send(404, "text/html", "<strong>404</strong><br>File Not Found");
+  else webServer.send(404, "text/plain", "File Not Found");
 }
 
 String getContentType(String filename){

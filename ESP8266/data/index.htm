@@ -2,6 +2,14 @@
 <head>
 
 <script type = "application/javascript">
+
+window.onload = function() {
+	if (window.location.search.indexOf("status") != -1) { document.getElementById("tab1").checked = true; }; 
+	if (window.location.search.indexOf("parameters") != -1) { document.getElementById("tab2").checked = true; }; 
+	if (window.location.search.indexOf("connection") != -1) { document.getElementById("tab3").checked = true; }; 
+	if (window.location.search.indexOf("alerts") != -1) { document.getElementById("tab4").checked = true; }; 
+}
+
 function loadData() {
 	var data_file = "/data";
 	var http_request = new XMLHttpRequest();
@@ -47,7 +55,7 @@ loadData();
 
 </script>
 
-<title>Indoor</title>
+<title>Proyecto</title>
 <style type="text/css">
 
 *, *:before, *:after {
@@ -120,11 +128,22 @@ p {
   line-height: 1.5;
 }
 
+#menu-background {
+	background-color: white; 
+	width: 100%;
+	margin-bottom: -49px; 
+	height: 47px; 
+	border-bottom: 2px solid #ddd;
+}
+
+#menu {
+	background-color: white;
+	border-bottom: 2px solid #ddd;
+}
 main {
   min-width: 320px;
   max-width: 800px;
   margin: 0 auto;
-  margin-top: 40px;
   background: #EEE;
   padding-bottom:100px;
 }
@@ -132,7 +151,7 @@ main {
 section {
   display: none;
   padding: 20px 0 0;
-  border-top: 1px solid #ddd;
+  border-top: 2px solid #ddd;
 }
 
 input {
@@ -146,6 +165,7 @@ label {
   font-weight: 600;
   text-align: center;
   color: #bbb;
+  background-color: white;
   border: 1px solid transparent;
 }
 
@@ -168,8 +188,8 @@ label:hover {
 input:checked + label {
   color: #555;
   border: 1px solid #ddd;
-  border-top: 2px solid orange;
-  border-bottom: 1px solid #EBEBEB;
+  border-bottom: 2px solid orange;
+  border-top: 1px solid #EBEBEB;
 }
 
 #tab1:checked ~ #content1,
@@ -213,6 +233,8 @@ footer p {
 }
 
 .simplecard {
+	margin-top: 5px;
+	margin-bottom: 5px;
 	padding: 15px;
 	background: white;
 	border-radius: 5px 5px 5px 5px;
@@ -430,19 +452,21 @@ footer p {
 <header>
 <div id="title"><div id="icon"></div><div id="text"><p>Panel de Control</p></div></div>
 </header>
-
+<div id="menu-background" />
 <main>
-  <input id="tab1" type="radio" name="tabs" checked>
+  <div id="menu-background" />
+  <input id="tab1" type="radio" name="tabs" onclick="window.history.replaceState(null, null, '?status');" checked>
   <label for="tab1">Estado</label>
     
-  <input id="tab2" type="radio" name="tabs">
+  <input id="tab2" type="radio" name="tabs" onclick="window.history.replaceState(null, null, '?parameters');">
   <label for="tab2">Par&#225;metros</label>
     
-  <input id="tab3" type="radio" name="tabs">
+  <input id="tab3" type="radio" name="tabs" onclick="window.history.replaceState(null, null, '?connection');">
   <label for="tab3">Conexi&#243;n</label>
     
-  <input id="tab4" type="radio" name="tabs">
+  <input id="tab4" type="radio" name="tabs" onclick="window.history.replaceState(null, null, '?alerts');">
   <label for="tab4">Alertas</label>
+  
     
   <section id="content1">
   
@@ -538,12 +562,30 @@ footer p {
   </section>
     
   <section id="content2">
-    <p>
-      Bacon ipsum dolor sit amet landjaeger sausage brisket, jerky drumstick fatback boudin ball tip turducken. Pork belly meatball t-bone bresaola tail filet mignon kevin turkey ribeye shank flank doner cow kielbasa shankle. Pig swine chicken hamburger, tenderloin turkey rump ball tip sirloin frankfurter meatloaf boudin brisket ham hock. Hamburger venison brisket tri-tip andouille pork belly ball tip short ribs biltong meatball chuck. Pork chop ribeye tail short ribs, beef hamburger meatball kielbasa rump corned beef porchetta landjaeger flank. Doner rump frankfurter meatball meatloaf, cow kevin pork pork loin venison fatback spare ribs salami beef ribs.
-    </p>
-    <p>
-      Jerky jowl pork chop tongue, kielbasa shank venison. Capicola shank pig ribeye leberkas filet mignon brisket beef kevin tenderloin porchetta. Capicola fatback venison shank kielbasa, drumstick ribeye landjaeger beef kevin tail meatball pastrami prosciutto pancetta. Tail kevin spare ribs ground round ham ham hock brisket shoulder. Corned beef tri-tip leberkas flank sausage ham hock filet mignon beef ribs pancetta turkey.
-    </p>
+    <div class="simplecard">
+	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
+	</div>
+	<div class="simplecard">
+	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
+	</div>
+	<div class="simplecard">
+	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
+	</div>
+	<div class="simplecard">
+	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
+	</div>
+	<div class="simplecard">
+	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
+	</div>
+	<div class="simplecard">
+	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
+	</div>
+	<div class="simplecard">
+	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
+	</div>
+	<div class="simplecard">
+	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
+	</div>
   </section>
     
   <section id="content3">
