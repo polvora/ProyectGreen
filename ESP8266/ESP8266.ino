@@ -108,54 +108,57 @@ void webRequestGetData() {
 }
 
 void webRequestSetParameters() {
-  if (webServer.args() != 24) {
+  if (webServer.args() != 32) {
      webServer.send(400, "text/plain", "Invalid Argument Number");
      return;
   }
-  if (webServer.arg("temperature_setpoint").toFloat() > 0 && webServer.arg("temperature_p").toFloat() > 0 &&
-      webServer.arg("temperature_i").toFloat() > 0 && webServer.arg("temperature_d").toFloat() > 0) {
+  if (webServer.arg("temperature_setpoint").toFloat() <= 0 || webServer.arg("temperature_p").toFloat() <= 0 ||
+      webServer.arg("temperature_i").toFloat() <= 0 || webServer.arg("temperature_d").toFloat() <= 0) {
     webServer.send(400, "text/plain", "Invalid Temperature Arguments");
     return;
   }
-  if (webServer.arg("humidity_setpoint").toFloat() > 0 && webServer.arg("humidity_p").toFloat() > 0 &&
-      webServer.arg("humidity_i").toFloat() > 0 && webServer.arg("humidity_d").toFloat() > 0) {
+  if (webServer.arg("humidity_setpoint").toFloat() <= 0 || webServer.arg("humidity_p").toFloat() <= 0 ||
+      webServer.arg("humidity_i").toFloat() <= 0 || webServer.arg("humidity_d").toFloat() <= 0) {
     webServer.send(400, "text/plain", "Invalid Humidity Arguments");
     return;
   }
-  if (webServer.arg("illuminance_setpoint").toFloat() > 0 && webServer.arg("illuminance_p").toFloat() > 0 &&
-      webServer.arg("illuminance_i").toFloat() > 0 && webServer.arg("illuminance_d").toFloat() > 0) {
-    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+  if (webServer.arg("illuminance_setpoint").toFloat() <= 0 || webServer.arg("illuminance_p").toFloat() <= 0 ||
+      webServer.arg("illuminance_i").toFloat() <= 0 || webServer.arg("illuminance_d").toFloat() <= 0) {
+    webServer.send(400, "text/plain", "Invalid Illuminance Arguments");
     return;
   }
-  if (webServer.arg("ground_moisture_setpoint").toFloat() > 0 && webServer.arg("ground_moisture_p").toFloat() > 0 &&
-      webServer.arg("ground_moisture_i").toFloat() > 0 && webServer.arg("ground_moisture_d").toFloat() > 0) {
-    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+  if (webServer.arg("ground_moisture_setpoint").toFloat() <= 0 || webServer.arg("ground_moisture_p").toFloat() <= 0 ||
+      webServer.arg("ground_moisture_i").toFloat() <= 0 || webServer.arg("ground_moisture_d").toFloat() <= 0) {
+    webServer.send(400, "text/plain", "Invalid Ground Moisture Arguments");
     return;
   }
-  if (webServer.arg("pressure_setpoint").toFloat() > 0 && webServer.arg("pressure_p").toFloat() > 0 &&
-      webServer.arg("pressure_i").toFloat() > 0 && webServer.arg("pressure_d").toFloat() > 0) {
-    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+  if (webServer.arg("pressure_setpoint").toFloat() <= 0 || webServer.arg("pressure_p").toFloat() <= 0 ||
+      webServer.arg("pressure_i").toFloat() <= 0 || webServer.arg("pressure_d").toFloat() <= 0) {
+    webServer.send(400, "text/plain", "Invalid Pressure Arguments");
     return;
   }
-  if (webServer.arg("ph_setpoint").toFloat() > 0 && webServer.arg("ph_p").toFloat() > 0 &&
-      webServer.arg("ph_i").toFloat() > 0 && webServer.arg("ph_d").toFloat() > 0) {
-    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+  if (webServer.arg("ph_setpoint").toFloat() <= 0 || webServer.arg("ph_p").toFloat() <= 0 ||
+      webServer.arg("ph_i").toFloat() <= 0 || webServer.arg("ph_d").toFloat() <= 0) {
+    webServer.send(400, "text/plain", "Invalid pH Arguments");
     return;
   }
-  if (webServer.arg("co2_setpoint").toFloat() > 0 && webServer.arg("co2_p").toFloat() > 0 &&
-      webServer.arg("co2_i").toFloat() > 0 && webServer.arg("co2_d").toFloat() > 0) {
-    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+  if (webServer.arg("co2_setpoint").toFloat() <= 0 || webServer.arg("co2_p").toFloat() <= 0 ||
+      webServer.arg("co2_i").toFloat() <= 0 || webServer.arg("co2_d").toFloat() <= 0) {
+    webServer.send(400, "text/plain", "Invalid CO2 Arguments");
     return;
   }
-  if (webServer.arg("ec_setpoint").toFloat() > 0 && webServer.arg("ec_p").toFloat() > 0 &&
-      webServer.arg("ec_i").toFloat() > 0 && webServer.arg("ec_d").toFloat() > 0) {
-    webServer.send(400, "text/plain", "Invalid Humidity Arguments");
+  if (webServer.arg("ec_setpoint").toFloat() <= 0 || webServer.arg("ec_p").toFloat() <= 0 ||
+      webServer.arg("ec_i").toFloat() <= 0 || webServer.arg("ec_d").toFloat() <= 0) {
+    webServer.send(400, "text/plain", "Invalid Eletrical Conductivity Arguments");
     return;
   }
   
   Serial.print("SETVALUES;");
   String mBuffer = Serial.readStringUntil(';');
-  if (!mBuffer.equals("OK")) return;
+  if (!mBuffer.equals("OK")) {
+    webServer.send(500, "text/plain", "Server Internal Error");
+    return;
+  }
   
   mBuffer = String();
   for (int i = 0; i < 8; i++) {

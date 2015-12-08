@@ -34,14 +34,14 @@ function loadData() {
 			var jsonObj = JSON.parse(http_request.responseText);
 
 			document.getElementById("page_refresh_time").innerHTML = jsonObj.page_refresh_time;
-			document.getElementById("value_temperature").innerHTML = jsonObj.value_temperature;
-			document.getElementById("value_humidity").innerHTML = jsonObj.value_humidity;
-			document.getElementById("value_illuminance").innerHTML = jsonObj.value_illuminance;
-			document.getElementById("value_ground_moisture").innerHTML = jsonObj.value_ground_moisture;
-			document.getElementById("value_pressure").innerHTML = jsonObj.value_pressure;
-			document.getElementById("value_ph").innerHTML = jsonObj.value_ph;
-			document.getElementById("value_co2").innerHTML = jsonObj.value_co2;
-			document.getElementById("value_ec").innerHTML = jsonObj.value_ec;
+			document.getElementById("status_value_temperature").innerHTML = jsonObj.value_temperature;
+			document.getElementById("status_value_humidity").innerHTML = jsonObj.value_humidity;
+			document.getElementById("status_value_illuminance").innerHTML = jsonObj.value_illuminance;
+			document.getElementById("status_value_ground_moisture").innerHTML = jsonObj.value_ground_moisture;
+			document.getElementById("status_value_pressure").innerHTML = jsonObj.value_pressure;
+			document.getElementById("status_value_ph").innerHTML = jsonObj.value_ph;
+			document.getElementById("status_value_co2").innerHTML = jsonObj.value_co2;
+			document.getElementById("status_value_ec").innerHTML = jsonObj.value_ec;
 
 			// Hacemos la llamada recursiva
 			setTimeout ("loadData()", jsonObj.page_refresh_time*1000);
@@ -136,10 +136,6 @@ p {
 	border-bottom: 2px solid #ddd;
 }
 
-#menu {
-	background-color: white;
-	border-bottom: 2px solid #ddd;
-}
 main {
   min-width: 320px;
   max-width: 800px;
@@ -154,7 +150,7 @@ section {
   border-top: 2px solid #ddd;
 }
 
-input {
+#tab1,#tab2,#tab3,#tab4 {
   display: none;
 }
 
@@ -230,15 +226,6 @@ footer p {
   label {
     padding: 15px;
   }
-}
-
-.simplecard {
-	margin-top: 5px;
-	margin-bottom: 5px;
-	padding: 15px;
-	background: white;
-	border-radius: 5px 5px 5px 5px;
-	box-shadow: 0px 1px 1px #ddd;
 }
 
 .container {
@@ -321,68 +308,68 @@ footer p {
 	width: 17px;
 	height: 17px;
 }
-.hum {
+.card.hum {
 	background: #2B66B9;
 	border: 1px solid #0047AB;
 }
-.hum .inner {
+.card.hum .inner {
 	border-top: 1px solid #0047AB;
 }
-.hum .inner .text {
+.card.hum .inner .text {
 	border: 1px solid #0047AB;
 	background: #2B66B9;
 	text-shadow: 1px 1px 0px #0047AB;
 }
-.hum .inner .icon {
+.card.hum .inner .icon {
 	top: -125px;
 }
-.light {
+.card.light {
 	background: #FFD940;
 	border: 1px solid #CCAE33;
 }
-.light .inner {
+.card.light .inner {
 	border-top: 1px solid #CCAE33;
 }
-.light .inner .text {
+.card.light .inner .text {
 	border: 1px solid #CCAE33;
 	background: #FFD940;
 	text-shadow: 1px 1px 0px #CCAE33;
 }
-.light .inner .icon {
+.card.light .inner .icon {
 	top: -100px;
 	font-size: 70px;
 	left: 55px;
 }
-.tmois {
+.card.tmois {
 	background: #a6c659;
 	border: 1px solid #7dad0a;
 }
-.tmois .inner {
+.card.tmois .inner {
 	border-top: 1px solid #7dad0a;
 }
-.tmois .inner .text {
+.card.tmois .inner .text {
 	border: 1px solid #7dad0a;
 	background: #a6c659;
 	text-shadow: 1px 1px 0px #7dad0a;
 }
-.tmois .inner .icon {
+.card.tmois .inner .icon {
 	top: -100px;
 	font-size: 70px;
 	left: 55px;
 }
-.pres {
+.card.pres {
 	background: #42AAFF;
 	border: 1px solid #3280C0;
 }
-.pres .inner {
+.card.pres .inner {
 	border-top: 1px solid #3280C0;
 }
-.pres .inner .text {
+.card.pres .inner .text {
 	border: 1px solid #3280C0;
 	background: #42AAFF;
 	text-shadow: 1px 1px 0px #3280C0;
 }
-.pres .inner .icon {
+.card.pres .inner .icon {
 	top: -50px;
 	font-size: 70px;
 	left: 55px;
@@ -393,57 +380,246 @@ footer p {
 	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
 
 }
-.ph {
+.card.ph {
 	background: #C080C0;
 	border: 1px solid #AB55AB;
 }
-.ph .inner {
+.card.ph .inner {
 	border-top: 1px solid #AB55AB;
 }
-.ph .inner .text {
+.card.ph .inner .text {
 	border: 1px solid #AB55AB;
 	background: #C080C0;
 	text-shadow: 1px 1px 0px #AB55AB;
 }
-.ph .inner .icon {
+.card.ph .inner .icon {
 	top: -100px;
 	font-size: 70px;
 	left: 55px;
 }
-.co2 {
+.card.co2 {
 	background: #AAA;
 	border: 1px solid #808080;
 }
-.co2 .inner {
+.card.co2 .inner {
 	border-top: 1px solid #808080;
 }
-.co2 .inner .text {
+.card.co2 .inner .text {
 	border: 1px solid #808080;
 	background: #AAA;
 	text-shadow: 1px 1px 0px #808080;
 }
-.co2 .inner .icon {
+.card.co2 .inner .icon {
 	top: -95px;
 	font-size: 90px;
 	left: 50px;
 }
-.ec {
+.card.ec {
 	background: #FFBC40;
 	border: 1px solid #CC9633;
 }
-.ec .inner {
+.card.ec .inner {
 	border-top: 1px solid #CC9633;
 }
-.ec .inner .text {
+.card.ec .inner .text {
 	border: 1px solid #CC9633;
 	background: #FFBC40;
 	text-shadow: 1px 1px 0px #CC9633;
 }
-.ec .inner .icon {
+.card.ec .inner .icon {
 	top: -115px;
 	font-size: 100px;
 	left: 65px;
 }
+
+.hcard {
+	position: relative;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	background: white;
+	border-radius: 5px 5px 5px 5px;
+	box-shadow: 0px 1px 1px #ddd;
+	height: 44px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+.hcard.names {
+	background: #FFBC39;
+	vertical-align: top;
+	color: #FFF;
+	font-weight: bold;
+}
+.hcard.names div {
+	display: inline-block;
+}
+.hcard.names .name1,.name2,.name3,.name4,.name5,.name6 {
+	position: absolute;
+	top: 15px;
+}
+.hcard.names .name1 { left: 58px; }
+.hcard.names .name2 { left: 282px; }
+.hcard.names .name3 { left: 384px; }
+.hcard.names .name4 { left: 476px; }
+.hcard.names .name5 { left: 564px; }
+.hcard.names .name6 { left: 663px; }
+
+.hcard.names .icon {
+	background-color: white;
+	color: #888;
+}
+.hcard .icon {
+	color: white;
+	padding: 5px;
+	font-size: 23px;
+	padding-top: 10px;
+	padding-left: 10px;
+	border-radius: 5px 0px 0px 5px;
+	box-shadow: 0px 1px 1px #ddd;
+	width: 44px;
+	height: 44px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+    box-sizing: border-box;
+	display: inline-block;
+	vertical-align: top;
+}
+.hcard.temp .icon {
+	padding-top: 5px;
+	background-color: #EC6F69;
+	padding-left: 7px;
+	font-size: 30px;
+}
+
+.hcard.hum .icon {
+	padding-top: 5px;
+	line-height:23px;
+	background-color: #2B66B9;
+	padding-left: 7px;
+	font-size: 30px;
+}
+
+.hcard.light .icon {
+	padding-top: 11px;
+	background-color: #FFD940;
+}
+.hcard.tmois .icon {
+	background-color: #A6C659;
+}
+.hcard.pres .icon {
+	background-color: #42AAFF;
+	-webkit-transform: rotate(-90deg);
+	-moz-transform: rotate(-90deg);
+	-ms-transform: rotate(-90deg);
+	-o-transform: rotate(-90deg);
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+	padding-left: 12px;
+}
+.hcard.ph .icon {
+	background-color: #C080C0;
+}
+.hcard.co2 .icon {
+	background-color: #AAAAAA;
+	font-size: 28px;
+}
+.hcard.ec .icon {
+	background-color: #FFBC40;
+	font-size: 30px;
+	padding-top: 7px;
+	padding-left: 14px;
+}
+
+.hcard .title {
+	vertical-align: top;
+	padding-left: 10px;
+	padding-top: 14px;
+	display: inline-block;
+	color: #666;
+	font-weight: bold;
+}
+.divider {
+	position: absolute;
+	height: 44px;
+	border-right: 1px solid #DDD;
+	display:inline-block;
+}
+.divider.d1 {
+	left: 270px;
+}
+.divider.d2 {
+	left: 359px;
+}
+.divider.d3 {
+	left: 640px;
+}
+
+.parameter_text {
+	display:inline-block;
+	position: absolute;
+	bottom: 12px;
+	overflow: hidden;
+    white-space: nowrap;
+	color: #888;
+	font-weight: bold;
+}
+.parameter_text div {
+	display:inline-block;
+}
+.parameter_text input {
+	width: 40px;
+}
+.parameter_text.pt1 {
+	left: 280px;
+	bottom: 15px;
+}
+.parameter_text.pt2 {
+	left: 370px;
+}
+.parameter_text.pt3 {
+	left: 460px;
+}
+.parameter_text.pt4 {
+	left: 550px;
+}
+.parameter_text.pt5 {
+	left: 663px;
+}
+
+#parameters_submit {
+	margin-top: 10px;
+	width: 150px;
+	font-weight: bold;
+	float: right;
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 16px;
+	color: #ffffff;
+	padding: 9px 20px;
+	background: -moz-linear-gradient(
+		top,
+		#005be3 0%,
+		#004ce3);
+	background: -webkit-gradient(
+		linear, left top, left bottom,
+		from(#005be3),
+		to(#004ce3));
+	-moz-border-radius: 0px;
+	-webkit-border-radius: 0px;
+	border-radius: 0px;
+	border: 0px solid #000000;
+	-moz-box-shadow:
+		0px 1px 4px rgba(000,000,000,0.5),
+		inset 0px 0px 0px rgba(255,255,255,0);
+	-webkit-box-shadow:
+		0px 1px 4px rgba(000,000,000,0.5),
+		inset 0px 0px 0px rgba(255,255,255,0);
+	box-shadow:
+		0px 1px 4px rgba(000,000,000,0.5),
+		inset 0px 0px 0px rgba(255,255,255,0);
+	text-shadow:
+		0px -1px 0px rgba(000,000,000,0),
+		0px 1px 0px rgba(255,255,255,0);
+}
+
 
 </style>
 </head>
@@ -468,9 +644,9 @@ footer p {
   <label for="tab4">Alertas</label>
   
     
-  <section id="content1">
+	<section id="content1">
   
-	<div class="simplecard">
+	<div class="hcard" style="padding: 15px;">
 	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
 	</div>
   
@@ -481,7 +657,7 @@ footer p {
 		  <div class='title'>
 			<div class='text'>TEMPERATURE</div>
 		  </div>
-		  <div class='number'><div id='value_temperature'>22</div></div>
+		  <div class='number'><div id='status_value_temperature'>22</div></div>
 		  <div class='measure'>CELCIUS</div>
 		</div>
 	  </div>
@@ -491,7 +667,7 @@ footer p {
 		  <div class='title'>
 			<div class='text'>HUMIDITY</div>
 		  </div>
-		  <div class='number'><div id='value_humidity'>45</div></div>
+		  <div class='number'><div id='status_value_humidity'>45</div></div>
 		  <div class='measure'>PERCENT</div>
 		</div>
 	  </div>
@@ -501,7 +677,7 @@ footer p {
 		  <div class='title'>
 			<div class='text'>ILLUMINANCE</div>
 		  </div>
-		  <div class='number'><div id='value_illuminance'>67</div></div>
+		  <div class='number'><div id='status_value_illuminance'>67</div></div>
 		  <div class='measure'>LUX</div>
 		</div>
 	  </div>
@@ -511,7 +687,7 @@ footer p {
 		  <div class='title'>
 			<div class='text'>GROUND MOISTURE</div>
 		  </div>
-		  <div class='number'><div id='value_ground_moisture'>31</div></div>
+		  <div class='number'><div id='status_value_ground_moisture'>31</div></div>
 		  <div class='measure'>PERCENT</div>
 		</div>
 	  </div>
@@ -523,7 +699,7 @@ footer p {
 		  <div class='title'>
 			<div class='text'>PRESSURE</div>
 		  </div>
-		  <div class='number'><div id='value_pressure'>760</div></div>
+		  <div class='number'><div id='status_value_pressure'>760</div></div>
 		  <div class='measure'>TORR</div>
 		</div>
 	  </div>
@@ -533,7 +709,7 @@ footer p {
 		  <div class='title'>
 			<div class='text'>POWER OF HYDROGEN</div>
 		  </div>
-		  <div class='number'><div id='value_ph'>6.2</div></div>
+		  <div class='number'><div id='status_value_ph'>6.2</div></div>
 		  <div class='measure'>PH</div>
 		</div>
 	  </div>
@@ -543,7 +719,7 @@ footer p {
 		  <div class='title'>
 			<div class='text'>CARBON DIOXIDE</div>
 		  </div>
-		  <div class='number'><div id='value_co2'>452</div></div>
+		  <div class='number'><div id='status_value_co2'>452</div></div>
 		  <div class='measure'>PPM</div>
 		</div>
 	  </div>
@@ -553,40 +729,223 @@ footer p {
 		  <div class='title'>
 			<div class='text'>ELECTRICAL CONDUCTIVITY</div>
 		  </div>
-		  <div class='number'><div id='value_ec'>1.2</div></div>
-		  <div class='measure'>MS/CM</div>
+		  <div class='number'><div id='status_value_ec'>1.2</div></div>
+		  <div class='measure'>S/M</div>
 		</div>
 	  </div>
 	</div>
 	
-  </section>
+	</section>
     
-  <section id="content2">
-    <div class="simplecard">
-	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
-	</div>
-	<div class="simplecard">
-	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
-	</div>
-	<div class="simplecard">
-	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
-	</div>
-	<div class="simplecard">
-	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
-	</div>
-	<div class="simplecard">
-	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
-	</div>
-	<div class="simplecard">
-	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
-	</div>
-	<div class="simplecard">
-	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
-	</div>
-	<div class="simplecard">
-	Los datos se actualizan automaticamente cada <strong><span id='page_refresh_time'>5</span> segundos</strong>.
-	</div>
-  </section>
+	<section id="content2">
+	<form action="parameters" method="POST">
+		<div class="hcard names">
+		<div class='icon'>&#127793;</div>
+		<div class="name1"><span>Sensores</span></div>
+		<div class="divider d1"></div>
+		<div class="name2"><span>Input</span></div>
+		<div class="divider d2"></div>
+		<div class="name3"><span>P</span></div>
+		<div class="name4"><span>I</span></div>
+		<div class="name5"><span>D</span></div>
+		<div class="divider d3"></div>
+		<div class="name6"><span>SetPoint</span></div>
+		</div>
+		<div class="hcard temp">
+			<div class="icon">&#127777;</div>
+			<div class="title"><span>Temperatura</span></div>
+			<div class="divider d1"></div>
+			<div class="parameter_text pt1"><div id="parameter_value_temperature">00.00</div> C&deg;</div>
+			<div class="divider d2"></div>
+			<div class="parameter_text pt2">
+				<input type="text" maxlength="5" size="5" name="temperature_p">
+				<div id="parameter_p_temperature">00.00</div>
+			</div>
+			<div class="parameter_text pt3">
+				<input type="text" maxlength="5" size="5" name="temperature_i">
+				<div id="parameter_i_temperature">00.00</div>
+			</div>
+			<div class="parameter_text pt4">
+				<input type="text" maxlength="5" size="5" name="temperature_d">
+				<div id="parameter_d_temperature">00.00</div>
+			</div>
+			<div class="divider d3"></div>
+			<div class="parameter_text pt5">
+				<input type="text" maxlength="5" size="5" name="temperature_setpoint">
+				<div id="parameter_objective_temperature">00.00</div> C&deg;
+			</div>
+		</div>
+		<div class="hcard hum">
+			<div class='icon'><strong>&#127787;</strong></div>
+			<div class="title"><span>Humedad</span></div>
+			<div class="divider d1"></div>
+			<div class="parameter_text pt1"><div id="parameter_value_humidity">00.00</div> %</div>
+			<div class="divider d2"></div>
+			<div class="parameter_text pt2">
+				<input type="text" maxlength="5" size="5" name="humidity_p">
+				<div id="parameter_p_humidity">00.00</div>
+			</div>
+			<div class="parameter_text pt3">
+				<input type="text" maxlength="5" size="5" name="humidity_i">
+				<div id="parameter_i_humidity">00.00</div>
+			</div>
+			<div class="parameter_text pt4">
+				<input type="text" maxlength="5" size="5" name="humidity_d">
+				<div id="parameter_d_humidity">00.00</div>
+			</div>
+			<div class="divider d3"></div>
+			<div class="parameter_text pt5">
+				<input type="text" maxlength="5" size="5" name="humidity_setpoint">
+				<div id="parameter_objective_humidity">00.00</div> %
+			</div>
+		</div>
+		<div class="hcard light">
+			<div class='icon'><strong>&#128262;</strong></div>
+			<div class="title"><span>Iluminancia</span></div>
+			<div class="divider d1"></div>
+			<div class="parameter_text pt1"><div id="parameter_value_illuminance">00.00</div> lux</div>
+			<div class="divider d2"></div>
+			<div class="parameter_text pt2">
+				<input type="text" maxlength="5" size="5" name="illuminance_p">
+				<div id="parameter_p_illuminance">00.00</div>
+			</div>
+			<div class="parameter_text pt3">
+				<input type="text" maxlength="5" size="5" name="illuminance_i">
+				<div id="parameter_i_illuminance">00.00</div>
+			</div>
+			<div class="parameter_text pt4">
+				<input type="text" maxlength="5" size="5" name="illuminance_d">
+				<div id="parameter_d_illuminance">00.00</div>
+			</div>
+			<div class="divider d3"></div>
+			<div class="parameter_text pt5">
+				<input type="text" maxlength="5" size="5" name="illuminance_setpoint">
+				<div id="parameter_objective_illuminance">00.00</div> lux
+			</div>
+		</div>
+		<div class="hcard tmois">
+			<div class='icon'>&#128166;</div>
+			<div class="title"><span>Humedad Terrestre</span></div>
+			<div class="divider d1"></div>
+			<div class="parameter_text pt1"><div id="parameter_value_ground_moisture">00.00</div> %</div>
+			<div class="divider d2"></div>
+			<div class="parameter_text pt2">
+				<input type="text" maxlength="5" size="5" name="ground_moisture_p">
+				<div id="parameter_p_ground_moisture">00.00</div>
+			</div>
+			<div class="parameter_text pt3">
+				<input type="text" maxlength="5" size="5" name="ground_moisture_i">
+				<div id="parameter_i_ground_moisture">00.00</div>
+			</div>
+			<div class="parameter_text pt4">
+				<input type="text" maxlength="5" size="5" name="ground_moisture_d">
+				<div id="parameter_d_ground_moisture">00.00</div>
+			</div>
+			<div class="divider d3"></div>
+			<div class="parameter_text pt5">
+				<input type="text" maxlength="5" size="5" name="ground_moisture_setpoint">
+				<div id="parameter_objective_ground_moisture">00.00</div> %
+			</div>
+		</div>
+		<div class="hcard pres">
+			<div class='icon'><strong>&#128168;</strong></div>
+			<div class="title"><span>Presi&oacute;n</span></div>
+			<div class="divider d1"></div>
+			<div class="parameter_text pt1"><div id="parameter_value_pressure">00.00</div> torr</div>
+			<div class="divider d2"></div>
+			<div class="parameter_text pt2">
+				<input type="text" maxlength="5" size="5" name="pressure_p">
+				<div id="parameter_p_pressure">00.00</div>
+			</div>
+			<div class="parameter_text pt3">
+				<input type="text" maxlength="5" size="5" name="pressure_i">
+				<div id="parameter_i_pressure">00.00</div>
+			</div>
+			<div class="parameter_text pt4">
+				<input type="text" maxlength="5" size="5" name="pressure_d">
+				<div id="parameter_d_pressure">00.00</div>
+			</div>
+			<div class="divider d3"></div>
+			<div class="parameter_text pt5">
+				<input type="text" maxlength="5" size="5" name="pressure_setpoint">
+				<div id="parameter_objective_pressure">00.00</div> torr
+			</div>
+		</div>
+		<div class="hcard ph">
+			<div class='icon'>&#13271;</div>
+			<div class="title"><span>Potencial Hidr&oacute;geno</span></div>
+			<div class="divider d1"></div>
+			<div class="parameter_text pt1"><div id="parameter_value_ph">00.00</div> pH</div>
+			<div class="divider d2"></div>
+			<div class="parameter_text pt2">
+				<input type="text" maxlength="5" size="5" name="ph_p">
+				<div id="parameter_p_ph">00.00</div>
+			</div>
+			<div class="parameter_text pt3">
+				<input type="text" maxlength="5" size="5" name="ph_i">
+				<div id="parameter_i_ph">00.00</div>
+			</div>
+			<div class="parameter_text pt4">
+				<input type="text" maxlength="5" size="5" name="ph_d">
+				<div id="parameter_d_ph">00.00</div>
+			</div>
+			<div class="divider d3"></div>
+			<div class="parameter_text pt5">
+				<input type="text" maxlength="5" size="5" name="ph_setpoint">
+				<div id="parameter_objective_ph">00.00</div> pH
+			</div>
+		</div>
+		<div class="hcard co2">
+			<div class='icon'>&#9729;</div>
+			<div class="title"><span>Di&oacute;xido de Carbono</span></div>
+			<div class="divider d1"></div>
+			<div class="parameter_text pt1"><div id="parameter_value_co2">00.00</div> ppm</div>
+			<div class="divider d2"></div>
+			<div class="parameter_text pt2">
+				<input type="text" maxlength="5" size="5" name="co2_p">
+				<div id="parameter_p_co2">00.00</div>
+			</div>
+			<div class="parameter_text pt3">
+				<input type="text" maxlength="5" size="5" name="co2_i">
+				<div id="parameter_i_co2">00.00</div>
+			</div>
+			<div class="parameter_text pt4">
+				<input type="text" maxlength="5" size="5" name="co2_d">
+				<div id="parameter_d_co2">00.00</div>
+			</div>
+			<div class="divider d3"></div>
+			<div class="parameter_text pt5">
+				<input type="text" maxlength="5" size="5" name="co2_setpoint">
+				<div id="parameter_objective_co2">00.00</div> ppm
+			</div>
+		</div>
+		<div class="hcard ec">
+			<div class='icon'><strong>&#9889;</strong></div>
+			<div class="title"><span>Conductividad El&eacute;ctrica</span></div>
+			<div class="divider d1"></div>
+			<div class="parameter_text pt1"><div id="parameter_value_ec">00.00</div> S/M</div>
+			<div class="divider d2"></div>
+			<div class="parameter_text pt2">
+				<input type="text" maxlength="5" size="5" name="ec_p">
+				<div id="parameter_p_ec">00.00</div>
+			</div>
+			<div class="parameter_text pt3">
+				<input type="text" maxlength="5" size="5" name="ec_i">
+				<div id="parameter_i_ec">00.00</div>
+			</div>
+			<div class="parameter_text pt4">
+				<input type="text" maxlength="5" size="5" name="ec_d">
+				<div id="parameter_d_ec">00.00</div>
+			</div>
+			<div class="divider d3"></div>
+			<div class="parameter_text pt5">
+				<input type="text" maxlength="5" size="5" name="ec_setpoint">
+				<div id="parameter_objective_ec">00.00</div> S/M
+			</div>
+		</div>
+		<button type="submit" value="submit" id="parameters_submit">Guardar</button>
+	</form>
+	</section>
     
   <section id="content3">
     <p>

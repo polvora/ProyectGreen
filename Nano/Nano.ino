@@ -92,6 +92,7 @@ void loop(){
 void processNextSerialRequest() {
   String mBuffer = Serial.readStringUntil(';');
   if(mBuffer.equals("GETVALUES")) sendValues();
+  if(mBuffer.equals("SETVALUES")) receiveValues();
 
   Serial.flush();
 }
@@ -115,6 +116,10 @@ void sendValues() {
   Serial.print(mBuffer);
   
   mBuffer = String();
+}
+
+void receiveValues() {
+  Serial.print("OK;");
 }
 
 void loadSettings() {
