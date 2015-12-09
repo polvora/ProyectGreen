@@ -84,22 +84,63 @@ void webRequestGetData() {
   json += "\"page_refresh_time\":"      +   String(PAGE_REFRESH_TIME, 10);
   json += ", \"status_network\":"       +   String(STATUS_NETWORK, 10);
   json += ", \"status_matomato\":"         +   String(STATUS_MATOMATO, 10);
+  
   json += ", \"value_temperature\":"    +   Serial.readStringUntil('/');
-  Serial.readStringUntil(';'); // All other TEMPERATURE values
+  json += ", \"setpoint_temperature\":"    +   Serial.readStringUntil('/');
+  json += ", \"output_temperature\":"    +   Serial.readStringUntil('/');
+  json += ", \"p_temperature\":"    +   Serial.readStringUntil('/');
+  json += ", \"i_temperature\":"    +   Serial.readStringUntil('/');
+  json += ", \"d_temperature\":"    +   Serial.readStringUntil(';');
+  
   json += ", \"value_humidity\":"       +   Serial.readStringUntil('/');
-  Serial.readStringUntil(';'); // All other HUMIDITY values
+  json += ", \"setpoint_humidity\":"    +   Serial.readStringUntil('/');
+  json += ", \"output_humidity\":"    +   Serial.readStringUntil('/');
+  json += ", \"p_humidity\":"    +   Serial.readStringUntil('/');
+  json += ", \"i_humidity\":"    +   Serial.readStringUntil('/');
+  json += ", \"d_humidity\":"    +   Serial.readStringUntil(';');
+  
   json += ", \"value_illuminance\":"    +   Serial.readStringUntil('/');
-  Serial.readStringUntil(';'); // All other ILLUMINANCE values
+  json += ", \"setpoint_illuminance\":"    +   Serial.readStringUntil('/');
+  json += ", \"output_illuminance\":"    +   Serial.readStringUntil('/');
+  json += ", \"p_illuminance\":"    +   Serial.readStringUntil('/');
+  json += ", \"i_illuminance\":"    +   Serial.readStringUntil('/');
+  json += ", \"d_illuminance\":"    +   Serial.readStringUntil(';');
+  
   json += ", \"value_ground_moisture\":"+   Serial.readStringUntil('/');
-  Serial.readStringUntil(';'); // All other GROUND_MOISTURE values
+  json += ", \"setpoint_ground_moisture\":"    +   Serial.readStringUntil('/');
+  json += ", \"output_ground_moisture\":"    +   Serial.readStringUntil('/');
+  json += ", \"p_ground_moisture\":"    +   Serial.readStringUntil('/');
+  json += ", \"i_ground_moisture\":"    +   Serial.readStringUntil('/');
+  json += ", \"d_ground_moisture\":"    +   Serial.readStringUntil(';');
+  
   json += ", \"value_pressure\":"       +   Serial.readStringUntil('/');
-  Serial.readStringUntil(';'); // All other PRESSURE values
+  json += ", \"setpoint_pressure\":"    +   Serial.readStringUntil('/');
+  json += ", \"output_pressure\":"    +   Serial.readStringUntil('/');
+  json += ", \"p_pressure\":"    +   Serial.readStringUntil('/');
+  json += ", \"i_pressure\":"    +   Serial.readStringUntil('/');
+  json += ", \"d_pressure\":"    +   Serial.readStringUntil(';');
+  
   json += ", \"value_ph\":"             +   Serial.readStringUntil('/');
-  Serial.readStringUntil(';'); // All other PH values
+  json += ", \"setpoint_ph\":"    +   Serial.readStringUntil('/');
+  json += ", \"output_ph\":"    +   Serial.readStringUntil('/');
+  json += ", \"p_ph\":"    +   Serial.readStringUntil('/');
+  json += ", \"i_ph\":"    +   Serial.readStringUntil('/');
+  json += ", \"d_ph\":"    +   Serial.readStringUntil(';');
+  
   json += ", \"value_co2\":"            +   Serial.readStringUntil('/');
-  Serial.readStringUntil(';'); // All other CO2 values
+  json += ", \"setpoint_co2\":"    +   Serial.readStringUntil('/');
+  json += ", \"output_co2\":"    +   Serial.readStringUntil('/');
+  json += ", \"p_co2\":"    +   Serial.readStringUntil('/');
+  json += ", \"i_co2\":"    +   Serial.readStringUntil('/');
+  json += ", \"d_co2\":"    +   Serial.readStringUntil(';');
+  
   json += ", \"value_ec\":"             +   Serial.readStringUntil('/');
-  Serial.readStringUntil(';'); // All other CO2 values
+  json += ", \"setpoint_ec\":"    +   Serial.readStringUntil('/');
+  json += ", \"output_ec\":"    +   Serial.readStringUntil('/');
+  json += ", \"p_ec\":"    +   Serial.readStringUntil('/');
+  json += ", \"i_ec\":"    +   Serial.readStringUntil('/');
+  json += ", \"d_ec\":"    +   Serial.readStringUntil(';');
+  
   json += "}";
   Serial.flush();
   
