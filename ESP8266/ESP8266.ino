@@ -15,7 +15,7 @@
 #define DNS_PORT          53
 #define DNS_TTL           300 // Time To Load
 #define PAGE_REFRESH_TIME 10 // Segundos
-#define GREEN_HOST        "green.com"
+#define GREEN_HOST        "matomato.com"
 
 // CONFIGURACIONES PROGRAMABLES
 char CONFIG_AP_SSID[32] = "CONTROL";
@@ -26,7 +26,7 @@ char CONFIG_STA_PSWD[64] = "otrotipo";
 
 // Variables de estado
 char STATUS_NETWORK = 0;
-char STATUS_GREEN = 0;
+char STATUS_MATOMATO = 0;
 
 // Globales
 ESP8266WebServer webServer(WEB_PORT);
@@ -83,7 +83,7 @@ void webRequestGetData() {
   String json = "{";
   json += "\"page_refresh_time\":"      +   String(PAGE_REFRESH_TIME, 10);
   json += ", \"status_network\":"       +   String(STATUS_NETWORK, 10);
-  json += ", \"status_green\":"         +   String(STATUS_GREEN, 10);
+  json += ", \"status_matomato\":"         +   String(STATUS_MATOMATO, 10);
   json += ", \"value_temperature\":"    +   Serial.readStringUntil('/');
   Serial.readStringUntil(';'); // All other TEMPERATURE values
   json += ", \"value_humidity\":"       +   Serial.readStringUntil('/');

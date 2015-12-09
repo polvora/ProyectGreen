@@ -585,7 +585,7 @@ footer p {
 	left: 663px;
 }
 
-#parameters_submit {
+button {
 	margin-top: 10px;
 	width: 150px;
 	font-weight: bold;
@@ -619,8 +619,97 @@ footer p {
 		0px -1px 0px rgba(000,000,000,0),
 		0px 1px 0px rgba(255,255,255,0);
 }
-
-
+#bcard_container {
+	position: relative;
+}
+.bcard {
+	position: relative;
+	margin-top: 5px;
+	margin-bottom: 5px;
+	margin-right: 7px;
+	width: 385px;
+	height: 300px;
+	display: inline-block;
+	background: white;
+	border-radius: 5px 5px 5px 5px;
+	box-shadow: 0px 1px 1px #ddd;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+    box-sizing: border-box;
+	position: absolute;
+}
+.bcard .title {
+	font-weight: bold;
+	padding: 14px;
+	height: 44px;
+	color: #555;
+	border-radius: 5px 5px 0px 0px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+    box-sizing: border-box;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+}
+.bcard.connection_net {
+	top: 0px;
+	height: 260px;
+}
+.bcard.connection_net .title {
+	color: #006193;
+	border-bottom-color: #0074B1;
+}
+.bcard.connection_config {
+	left: 400px;
+	height: 250px;
+}
+.bcard.connection_config .title {
+	top: 20px;
+	left: 400px;
+	color: #E6AA33;
+	border-bottom-color: #FFBC39;
+}
+.bcard.connection_account {
+	left: 400;
+	top: 265px;
+}
+.bcard.connection_account .title {
+	color: #8EAE42;
+	border-bottom-color: #A6C659;
+}
+.bcard .connection_comment {
+	padding: 15px;
+	color: #444;
+}
+.form_connection {
+	position: relative;
+	padding: 15px;
+}
+.field1_text {
+	position: absolute;
+	font-weight: bold;
+	top: 18px;
+	left: 15px;
+}
+.field1_input {
+	position: absolute;
+	right: 15px;
+}
+.field2_text {
+	position: absolute;
+	font-weight: bold;
+	top: 53px;
+	left: 15px;
+}
+.field2_input {
+	position: absolute;
+	top: 50px;
+	right: 15px;
+}
+.form_connection button {
+	position: absolute;
+	top: 85px;
+	right: 15px;
+}
 </style>
 </head>
 <body>
@@ -943,19 +1032,53 @@ footer p {
 				<div id="parameter_objective_ec">00.00</div> S/M
 			</div>
 		</div>
-		<button type="submit" value="submit" id="parameters_submit">Guardar</button>
+		<button type="submit" value="submit">Guardar</button>
 	</form>
 	</section>
     
   <section id="content3">
-    <p>
-      Bacon ipsum dolor sit amet beef venison beef ribs kielbasa. Sausage pig leberkas, t-bone sirloin shoulder bresaola. Frankfurter rump porchetta ham. Pork belly prosciutto brisket meatloaf short ribs.
-    </p>
-    <p>
-      Brisket meatball turkey short loin boudin leberkas meatloaf chuck andouille pork loin pastrami spare ribs pancetta rump. Frankfurter corned beef beef tenderloin short loin meatloaf swine ground round venison.
-    </p>
+	<div id="bcard_container">
+		<div class="bcard connection_net">
+			<div class="title">Conecci&oacute;n a Internet</div>
+			<div class="connection_comment">Red a la que se conectar&aacute; el controlador para acceder a Internet.</div>
+			<form action="parameters" method="POST">
+				<div class="form_connection">
+					<div class="field1_text" title="SSID">Nombre de la Red</div>
+					<input class="field1_input" type="text" maxlength="32" size="20" name="internet_ssid">
+					<div class="field2_text" title="PSK">Contrase&ntilde;a de la Red</div>
+					<input class="field2_input"type="text" maxlength="64" size="20" name="internet_psk">
+					<button type="submit" value="submit">Guardar</button>
+				</div>
+			</form>
+		</div>
+		<div class="bcard connection_config">
+			<div class="title">Red de Configuraci&oacute;n</div>
+			<div class="connection_comment">Red que se usar&aacute; para entrar al Panel de Control.</div>
+			<form action="parameters" method="POST">
+				<div class="form_connection">
+					<div class="field1_text" title="SSID">Nombre de la Red</div>
+					<input class="field1_input" type="text" maxlength="32" size="20" name="config_ssid">
+					<div class="field2_text" title="PSK">Contrase&ntilde;a de la Red</div>
+					<input class="field2_input"type="text" maxlength="64" size="20" name="config_psk">
+					<button type="submit" value="submit">Guardar</button>
+				</div>
+			</form>
+		</div>
+		<div class="bcard connection_account">
+			<div class="title">Cuenta MaTomate</div>
+			<div class="connection_comment">Cuenta que se usar&aacute; para subir los datos Internet.</div>
+			<form action="parameters" method="POST">
+				<div class="form_connection">
+					<div class="field1_text">Usuario</div>
+					<input class="field1_input" type="text" maxlength="32" size="20" name="account_username">
+					<div class="field2_text">Contrase&ntilde;a</div>
+					<input class="field2_input"type="text" maxlength="64" size="20" name="account_password">
+					<button type="submit" value="submit">Guardar</button>
+				</div>
+			</form>
+		</div>
+	</div>
   </section>
-    
   <section id="content4">
     <p>
       Bacon ipsum dolor sit amet landjaeger sausage brisket, jerky drumstick fatback boudin ball tip turducken. Pork belly meatball t-bone bresaola tail filet mignon kevin turkey ribeye shank flank doner cow kielbasa shankle. Pig swine chicken hamburger, tenderloin turkey rump ball tip sirloin frankfurter meatloaf boudin brisket ham hock. Hamburger venison brisket tri-tip andouille pork belly ball tip short ribs biltong meatball chuck. Pork chop ribeye tail short ribs, beef hamburger meatball kielbasa rump corned beef porchetta landjaeger flank. Doner rump frankfurter meatball meatloaf, cow kevin pork pork loin venison fatback spare ribs salami beef ribs. Bacon ipsum dolor sit amet landjaeger sausage brisket, jerky drumstick fatback boudin ball tip turducken. Pork belly meatball t-bone bresaola tail filet mignon kevin turkey ribeye shank flank doner cow kielbasa shankle. Pig swine chicken hamburger, tenderloin turkey rump ball tip sirloin frankfurter meatloaf boudin brisket ham hock. Hamburger venison brisket tri-tip andouille pork belly ball tip short ribs biltong meatball chuck. Pork chop ribeye tail short ribs, beef hamburger meatball kielbasa rump corned beef porchetta landjaeger flank. Doner rump frankfurter meatball meatloaf, cow kevin pork pork loin venison fatback spare ribs salami beef ribs. Bacon ipsum dolor sit amet landjaeger sausage brisket, jerky drumstick fatback boudin ball tip turducken. Pork belly meatball t-bone bresaola tail filet mignon kevin turkey ribeye shank flank doner cow kielbasa shankle. Pig swine chicken hamburger, tenderloin turkey rump ball tip sirloin frankfurter meatloaf boudin brisket ham hock. Hamburger venison brisket tri-tip andouille pork belly ball tip short ribs biltong meatball chuck. Pork chop ribeye tail short ribs, beef hamburger meatball kielbasa rump corned beef porchetta landjaeger flank. Doner rump frankfurter meatball meatloaf, cow kevin pork pork loin venison fatback spare ribs salami beef ribs.Bacon ipsum dolor sit amet landjaeger sausage brisket, jerky drumstick fatback boudin ball tip turducken. Pork belly meatball t-bone bresaola tail filet mignon kevin turkey ribeye shank flank doner cow kielbasa shankle. Pig swine chicken hamburger, tenderloin turkey rump ball tip sirloin frankfurter meatloaf boudin brisket ham hock. Hamburger venison brisket tri-tip andouille pork belly ball tip short ribs biltong meatball chuck. Pork chop ribeye tail short ribs, beef hamburger meatball kielbasa rump corned beef porchetta landjaeger flank. Doner rump frankfurter meatball meatloaf, cow kevin pork pork loin venison fatback spare ribs salami beef ribs.
@@ -964,7 +1087,6 @@ footer p {
       Jerky jowl pork chop tongue, kielbasa shank venison. Capicola shank pig ribeye leberkas filet mignon brisket beef kevin tenderloin porchetta. Capicola fatback venison shank kielbasa, drumstick ribeye landjaeger beef kevin tail meatball pastrami prosciutto pancetta. Tail kevin spare ribs ground round ham ham hock brisket shoulder. Corned beef tri-tip leberkas flank sausage ham hock filet mignon beef ribs pancetta turkey.
     </p>
   </section>
-    
 </main>
 <footer>
 	<p>
